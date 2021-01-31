@@ -1,9 +1,9 @@
 class button {
-    constructor(i, j) {
+    constructor(i, j, key) {
         const id = i * 10 + j 
         this.id = id;
-        this.label = addLabels(id);
-        if (this.id % 10 == 3) {
+        this.label = (key !== undefined) ? key : addLabels(id);
+        if (this.label == "+" || this.label == "-" || this.label == "/" || this.label == "X") {
             this.type = "Operator";
         } else if (this.label === "=") {
             this.type = "Result";
@@ -60,7 +60,7 @@ const amountOfSquares = 4;
 var displayNumber = "";
 var a = 0;
 var b = 0;
-var operatorActive = false
+var operatorActive = false;
 var operator = "";
 
 resizeCalculator();
@@ -69,6 +69,8 @@ buildGrid();
 window.addEventListener("resize", () =>
   resizeCalculator()
 );
+
+window.addEventListener('keydown', inputViaKeyboard);
 
 function resizeCalculator() {
 
@@ -121,25 +123,28 @@ function buildGrid() {
 };
 
 function buttonClick(calculatorButton) {
-    if (calculatorButton.type == "Number" && operatorActive == false) {
-        displayNumber += calculatorButton.label
-    } else if (calculatorButton.type == "Number" && operatorActive == true) {
-        displayNumber = calculatorButton.label
+    if (calculatorButton.type == "Number" && (operatorActive == false || b != 0)) {
+        displayNumber += calculatorButton.label;
+        displayNumber = parseFloat(displayNumber);
+    } else if (calculatorButton.type == "Number" && operatorActive == true && b == 0) {
+        displayNumber = calculatorButton.label;
+        b = calculatorButton.label;
     } else if (calculatorButton.label == "c") {
         displayNumber = "0";
         a = 0;
         b = 0;
+        operatorActive = false;
     } else if (calculatorButton.type == "Operator" || calculatorButton.type == "Result") {
         if (operatorActive == false || operator == "=") {
         a = displayNumber;
-        operatorActive = true
-        operator = calculatorButton.label
+        operatorActive = true;
+        operator = calculatorButton.label;
         } else {
-        b = displayNumber
+        b = displayNumber;
         displayNumber = calculate(a, b, operator);
         a = displayNumber;
         b = 0;
-        operator = calculatorButton.label
+        operator = calculatorButton.label;
         };
     };
 
@@ -189,3 +194,57 @@ function addLabels(id) {
 
     }
 }
+
+function inputViaKeyboard(keyEvent) {
+    let inputValue
+    let value
+    switch (keyEvent.key) {
+        case  "1":
+            inputValue = "1"
+            break;
+        case  "2": 
+            inputValue = "2"
+            break;
+        case  "3": 
+            inputValue = "3"
+            break;
+        case  "4": 
+            inputValue = "4"
+            break;
+        case  "5":  
+            inputValue = "5"
+            break;
+        case  "6":  
+            inputValue = "6"
+            break;
+        case  "7":  
+            inputValue = "7"
+            break;
+        case  "8":  
+            inputValue = "8"
+            break;
+        case  "9":  
+            inputValue = "9"
+            break;
+        case  "+": 
+            inputValue = "+"
+            break;
+        case  "-": 
+            inputValue = "-"
+            break;
+        case  "*":  
+            inputValue = "X"
+            break;
+        case  "/": 
+            inputValue = "/"
+            break;
+        case  "Enter":  
+            inputValue = "="
+            break;
+        default:
+            return;
+    }
+
+    console.log(keyEvent.key + inputValue);
+    buttonClick(new button(1, 1, inputValue))
+};
