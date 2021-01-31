@@ -109,32 +109,9 @@ function buildGrid() {
             colSpan.addEventListener('mouseout', () => {
                 colSpan.classList.remove('mouseInSpan');
             });
-            colSpan.addEventListener('click', () => {
-                if (calculatorButton.type == "Number") {
-                    displayNumber += calculatorButton.label
-                } else if (calculatorButton.label == "c") {
-                    displayNumber = "0";
-                    a = 0;
-                    b = 0;
-                } else if (calculatorButton.type == "Operator" || calculatorButton.type == "Result") {
-                    if (operatorActive == false || operator == "=") {
-                    a = displayNumber;
-                    operatorActive = true
-                    operator = calculatorButton.label
-                    displayNumber = "0"
-                    } else {
-                    b = displayNumber
-                    displayNumber = calculate(a, b, operator);
-                    a = displayNumber;
-                    b = 0;
-                    operator = calculatorButton.label
-                    };
-                };
-
-                let display = document.querySelector('#window');
-                display.innerHTML = displayNumber;
-
-            }); 
+            colSpan.addEventListener('click', function(){
+                buttonClick(calculatorButton)
+            });
 
             colSpan.classList.add(calculatorButton.type);
 
@@ -142,6 +119,34 @@ function buildGrid() {
         };
     };
 };
+
+function buttonClick(calculatorButton) {
+    if (calculatorButton.type == "Number" && operatorActive == false) {
+        displayNumber += calculatorButton.label
+    } else if (calculatorButton.type == "Number" && operatorActive == true) {
+        displayNumber = calculatorButton.label
+    } else if (calculatorButton.label == "c") {
+        displayNumber = "0";
+        a = 0;
+        b = 0;
+    } else if (calculatorButton.type == "Operator" || calculatorButton.type == "Result") {
+        if (operatorActive == false || operator == "=") {
+        a = displayNumber;
+        operatorActive = true
+        operator = calculatorButton.label
+        } else {
+        b = displayNumber
+        displayNumber = calculate(a, b, operator);
+        a = displayNumber;
+        b = 0;
+        operator = calculatorButton.label
+        };
+    };
+
+    let display = document.querySelector('#window');
+    display.innerHTML = displayNumber;
+
+}; 
 
 function addLabels(id) {
 
