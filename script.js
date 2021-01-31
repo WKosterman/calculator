@@ -1,3 +1,41 @@
+function add(a, b) {
+    return a + b;
+};
+
+function subtract(a, b) {
+    return a - b;
+};
+
+function multiply(a, b) {
+    return a * b;
+};
+
+function divide(a,b) {
+    let result = (b == 0) ? "Can't divide by 0" : a / b;
+    return result;
+};
+
+function calculate(a, b, operation) {
+    let result;
+    switch (operation) {
+        case "+":
+            result = add(a,b)
+            break;
+        case "-":
+            result = subtract(a,b)
+            break;
+        case "X":
+            result = multiply(a,b)
+            break;
+        case "/":
+            result = divide(a,b)
+            break;    
+        default:
+            break;
+    };
+    return result;
+};
+
 
 const amountOfSquares = 4;
 
