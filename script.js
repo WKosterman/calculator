@@ -1,3 +1,20 @@
+class button {
+    constructor(i, j) {
+        const id = i * 10 + j 
+        this.id = id;
+        this.label = addLabels(id);
+        if (this.id % 10 == 3) {
+            this.type = "Operator";
+        } else if (this.label === "=") {
+            this.type = "Result";
+        } else if (this.label === "c") {
+            this.type = "Clear";
+        } else {
+            this.type = "Number";
+        }
+    }
+};
+
 function add(a, b) {
     return a + b;
 };
@@ -15,7 +32,9 @@ function divide(a,b) {
     return result;
 };
 
-function calculate(a, b, operation) {
+function calculate(aStr, bStr, operation) {
+    let a = parseFloat(aStr);
+    let b = parseFloat(bStr);
     let result;
     switch (operation) {
         case "+":
@@ -33,11 +52,16 @@ function calculate(a, b, operation) {
         default:
             break;
     };
-    return result;
+    return Math.round(result*10000)/10000;
 };
 
 
 const amountOfSquares = 4;
+var displayNumber = "";
+var a = 0;
+var b = 0;
+var operatorActive = false
+var operator = "";
 
 resizeCalculator();
 buildGrid();
@@ -71,10 +95,13 @@ function buildGrid() {
         rowDiv.classList.add('rowDiv');
         gridContainer.appendChild(rowDiv);
         for (let j = 0; j < amountOfSquares; j++) { 
+
+            let calculatorButton = new button(i,j);
             let colSpan = document.createElement('span');
-            colSpan.id = i*10+j;
+
+            colSpan.id = calculatorButton.id;
             colSpan.classList.add('colSpan');
-            colSpan.innerHTML = addLabels(colSpan);
+            colSpan.innerHTML = calculatorButton.label;
             
             colSpan.addEventListener('mouseover', () => {
                 colSpan.classList.add('mouseInSpan');
@@ -82,19 +109,43 @@ function buildGrid() {
             colSpan.addEventListener('mouseout', () => {
                 colSpan.classList.remove('mouseInSpan');
             });
-            if (j < 3) {
-            colSpan.classList.add('numberSpan');
-            } else {
-            colSpan.classList.add('operatorSpan');
-        }
+            colSpan.addEventListener('click', () => {
+                if (calculatorButton.type == "Number") {
+                    displayNumber += calculatorButton.label
+                } else if (calculatorButton.label == "c") {
+                    displayNumber = "0";
+                    a = 0;
+                    b = 0;
+                } else if (calculatorButton.type == "Operator" || calculatorButton.type == "Result") {
+                    if (operatorActive == false || operator == "=") {
+                    a = displayNumber;
+                    operatorActive = true
+                    operator = calculatorButton.label
+                    displayNumber = "0"
+                    } else {
+                    b = displayNumber
+                    displayNumber = calculate(a, b, operator);
+                    a = displayNumber;
+                    b = 0;
+                    operator = calculatorButton.label
+                    };
+                };
+
+                let display = document.querySelector('#window');
+                display.innerHTML = displayNumber;
+
+            }); 
+
+            colSpan.classList.add(calculatorButton.type);
+
             rowDiv.appendChild(colSpan);
         };
     };
 };
 
-function addLabels(colSpan) {
+function addLabels(id) {
 
-    switch (parseInt(colSpan.id)) {
+    switch (parseInt(id)) {
         case 0:
             return "7";
         case 1:
