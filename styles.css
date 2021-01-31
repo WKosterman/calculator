@@ -1,0 +1,59 @@
+:root {
+    --squareSize: 200px;
+    --gridSize: 800px;
+  }
+
+
+body {
+    position: relative;
+    font-family: 'Roboto', 'Times New Roman', Times, serif;
+    font-size: medium;
+}
+
+.colSpan {
+    display: inline-block;
+    width: var(--squareSize);
+    height: var(--squareSize);
+    margin: -1px;
+    border: 1px solid rgb(0, 0, 0); 
+    background-color: rgb(255, 255, 255);
+    font-size: var(--squareSize); 
+    font-family:'Courier New', Courier, monospace;
+    text-align: center;
+    cursor: pointer;     
+}
+
+.rowDiv {
+    padding: 0px;
+    height: var(--squareSize);
+}
+
+.operatorSpan {
+    background-color: rgb(255, 198, 112);    
+}
+
+.numberSpan {
+    background-color: rgb(255, 255, 255);
+}
+
+.mouseInSpan {
+    background-color: rgb(255, 153, 0);    
+}
+
+
+.grid {
+    width:var(--gridSize);
+    height: var(--gridSize);
+}
+
+#window {
+    display: inline-block;
+    width: var(--gridSize);
+    height: var(--squareSize);
+    margin: -1px;
+    border: 1px solid rgb(0, 0, 0); 
+    background-color: rgb(255, 255, 255);
+    font-size: var(--squareSize); 
+    font-family:'Courier New', Courier, monospace;
+    text-align: left;     
+}
